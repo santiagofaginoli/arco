@@ -12,7 +12,6 @@
             --color-primary: #1e3a8a; /* Blue-800 */
             --color-secondary: #3b82f6; /* Blue-500 */
             --color-text-dark: #1f2937; /* Gray-800 */
-            --color-text-light: #4b5563; /* Gray-600 */
         }
 
         body {
@@ -65,15 +64,16 @@
 
         <header class="text-center mb-12">
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 mx-auto">
-                Fundamentos del Procesamiento Multinúcleo y Hilos
+                Fundamentos Profundos del Procesamiento Multinúcleo y Hilos
             </h1>
-            <p class="text-lg text-gray-500 mt-2 font-light">Arquitectura de Sistemas y Programación Paralela</p>
+            <p class="text-lg text-gray-500 mt-2 font-light">Arquitectura de Sistemas, Concurrencia y Sincronización Avanzada</p>
         </header>
 
         <section class="mb-14 p-6 bg-gray-50 rounded-xl">
             <h2 class="text-2xl sm:text-3xl font-bold mb-4">1. La Evolución de la Computación: Del Uninúcleo al Paralelismo</h2>
-            <p class="text-base sm:text-lg leading-relaxed text-gray-700">El rendimiento ya no depende de un solo procesador cada vez más rápido. Hace décadas, se alcanzó un límite físico para aumentar la velocidad del reloj debido a los problemas de calor. Para continuar la mejora, la industria se vio obligada a un cambio fundamental.</p>
-            <p class="text-base sm:text-lg leading-relaxed mt-4 p-4 border-l-4 border-blue-500 bg-blue-50">La solución fue el <strong class="text-blue-700 font-extrabold">procesamiento multinúcleo</strong>: la integración de múltiples unidades de procesamiento, o <strong class="text-blue-700 font-extrabold">núcleos</strong>, en un solo chip. Esto permite que una computadora ejecute múltiples tareas <strong class="underline">simultáneamente</strong>, aprovechando el poder de procesamiento en paralelo. El IBM Power 4 (2000) es reconocido como el pionero.</p>
+            <p class="text-base sm:text-lg leading-relaxed text-gray-700">Históricamente, el aumento de la velocidad de las computadoras se lograba incrementando la **frecuencia (GHz)**. Sin embargo, este camino se encontró con el muro de la energía: aumentar la frecuencia generaba una cantidad de calor (potencia) insostenible. Este fenómeno marcó el fin de la **Ley de Moore** en términos de aumento de velocidad de reloj.</p>
+            <p class="text-base sm:text-lg leading-relaxed mt-4 p-4 border-l-4 border-blue-500 bg-blue-50">La solución fue el <strong class="text-blue-700 font-extrabold">procesamiento multinúcleo</strong>: pasar de una ejecución serial rápida a una **ejecución paralela** simultánea. Esto no solo distribuye la carga de trabajo, sino que permite que la velocidad de procesamiento crezca linealmente con el número de núcleos, respetando las limitaciones físicas de temperatura y consumo de energía. El <strong class="font-extrabold">IBM Power 4 (2000)</strong> formalizó esta transición.</p>
+            <p class="text-base sm:text-lg leading-relaxed mt-4 text-gray-700">⚠️ **El Límite de la Ley de Amdahl:** Este principio establece que la ganancia de velocidad (speedup) obtenida al paralelizar un programa está limitada por la fracción del código que debe ejecutarse de forma serial. Por más núcleos que se agreguen, el rendimiento nunca superará la velocidad de esa parte serial.</p>
         </section>
 
         <hr class="my-12 border-blue-200">
@@ -84,18 +84,18 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 
                 <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">⚙️ Unidades de Hardware</h3>
+                    <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">⚙️ Unidades de Hardware y Abstracción</h3>
                     <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3">
-                        <li><strong class="font-bold">Núcleo de Procesamiento:</strong> La unidad fundamental de una CPU, capaz de ejecutar instrucciones. Un chip moderno tiene dos o más.</li>
-                        <li><strong class="font-bold">Hyper-Threading / SMT:</strong> Tecnologías que permiten que un solo núcleo físico actúe como si fuera <strong class="text-indigo-600">dos núcleos lógicos</strong>, mejorando la concurrencia y la utilización de recursos.</li>
+                        <li><strong class="font-bold">Núcleo Físico:</strong> Unidad de procesamiento con su propia **unidad de control y unidades aritmético-lógicas (ALU)**. Es el verdadero motor de ejecución independiente.</li>
+                        <li><strong class="font-bold">Hyper-Threading / SMT:</strong> Permite que un solo núcleo físico gestione el estado (registros, caché) de dos hilos simultáneamente. Cuando un hilo se detiene para esperar datos (latencia de memoria), el núcleo salta inmediatamente al otro hilo. Esto resulta en <strong class="text-indigo-600">dos núcleos lógicos</strong> por núcleo físico.</li>
                     </ul>
                 </div>
                 
                 <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">💾 Unidades de Software</h3>
+                    <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">💾 Unidades de Software (Contextos de Ejecución)</h3>
                     <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3">
-                        <li><strong class="font-bold">Proceso:</strong> Una instancia en ejecución de un programa. Son <strong class="text-red-500">"pesados"</strong> (aislamiento estricto de memoria).</li>
-                        <li><strong class="font-bold">Hilo (o Thread):</strong> Una unidad de ejecución <strong class="text-green-600">"ligera"</strong> dentro de un proceso. Comparten memoria, por lo que su gestión es más rápida y eficiente.</li>
+                        <li><strong class="font-bold">Proceso:</strong> Es el **contenedor de recursos** completo. Incluye un espacio de direcciones de memoria virtual dedicado y privado, archivos abiertos y estructuras de datos del kernel. Crearlos es <strong class="text-red-500">lento</strong> (coste de crear la estructura de memoria).</li>
+                        <li><strong class="font-bold">Hilo (o Thread):</strong> Es la **secuencia de ejecución** dentro de un proceso. Los hilos dentro del mismo proceso <strong class="font-extrabold text-green-600">comparten el mismo espacio de direcciones y recursos</strong> (heap, código, datos), pero cada uno tiene su propia pila y registros. Crearlos es <strong class="text-green-600">rápido</strong>.</li>
                     </ul>
                 </div>
             </div>
@@ -105,32 +105,32 @@
 
         <section class="mb-14">
             <h2 class="text-2xl sm:text-3xl font-bold mb-6">3. Concurrencia vs. Paralelismo: Conceptos Esenciales</h2>
-            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">La diferencia entre gestionar tareas a lo largo del tiempo (concurrencia) y ejecutarlas al mismo tiempo (paralelismo) es fundamental. </p>
+            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">Esta es la distinción más crítica para el diseño de sistemas. El paralelismo es una característica del hardware; la concurrencia es un concepto de diseño que optimiza la gestión de tareas.</p>
             
             <div class="overflow-x-auto rounded-xl shadow-xl">
                 <table class="w-full text-base sm:text-lg text-left styled-table">
                     <thead class="text-xs uppercase lg:text-sm">
                         <tr>
                             <th scope="col" class="px-4 py-3 sm:px-6">Característica</th>
-                            <th scope="col" class="px-4 py-3 sm:px-6">Concurrencia (Aparentemente Simultáneo)</th>
-                            <th scope="col" class="px-4 py-3 sm:px-6">Paralelismo (Realmente Simultáneo)</th>
+                            <th scope="col" class="px-4 py-3 sm:px-6">Concurrencia (Gestión y Control)</th>
+                            <th scope="col" class="px-4 py-3 sm:px-6">Paralelismo (Ejecución y Desempeño)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="bg-white border-b hover:bg-gray-50">
-                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Naturaleza</td>
-                            <td class="px-4 py-4 sm:px-6"><strong>Diseño de software.</strong> Se enfoca en la gestión de tareas.</td>
-                            <td class="px-4 py-4 sm:px-6"><strong>Ejecución de hardware.</strong> Se enfoca en la ejecución real.</td>
+                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Definición</td>
+                            <td class="px-4 py-4 sm:px-6">Capacidad de gestionar **múltiples tareas a lo largo de un período**, mediante cambio de contexto.</td>
+                            <td class="px-4 py-4 sm:px-6">Capacidad de ejecutar **múltiples tareas exactamente al mismo instante** en diferentes unidades.</td>
                         </tr>
                         <tr class="bg-white border-b hover:bg-gray-50">
-                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Hardware</td>
-                            <td class="px-4 py-4 sm:px-6">Puede funcionar en **un solo procesador**.</td>
+                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Requisito Mínimo</td>
+                            <td class="px-4 py-4 sm:px-6">Solo requiere **un núcleo** (uniprocesador).</td>
                             <td class="px-4 py-4 sm:px-6">Requiere **múltiples núcleos** (multinúcleo).</td>
                         </tr>
                         <tr class="bg-white hover:bg-gray-50">
-                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Metáfora</td>
-                            <td class="px-4 py-4 sm:px-6">Un <strong class="text-orange-500">solo cocinero</strong> que salta entre tareas.</td>
-                            <td class="px-4 py-4 sm:px-6">Dos <strong class="text-green-500">cocineros</strong> trabajando <strong class="font-extrabold">al mismo tiempo</strong>.</td>
+                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Impacto</td>
+                            <td class="px-4 py-4 sm:px-6">Mejora el **uso del sistema** y la capacidad de respuesta.</td>
+                            <td class="px-4 py-4 sm:px-6">Mejora el **rendimiento total** y reduce el tiempo de finalización.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -140,13 +140,19 @@
         <hr class="my-12 border-blue-200">
 
         <section class="mb-14 p-6 border border-dashed border-indigo-300 rounded-xl">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-6">4. Modelos de Hilos en Sistemas Operativos</h2>
-            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">La eficiencia depende de cómo el sistema operativo mapea los hilos de tu programa a los hilos que el kernel gestiona.</p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6">4. Modelos de Hilos en Sistemas Operativos: El Mapeo Lógico</h2>
+            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">El modelo de hilos determina qué tan bien un programa puede explotar el paralelismo del hardware, en función de cómo el **sistema operativo (kernel)** ve y gestiona los hilos creados por el programador (hilos de usuario).</p>
             
             <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-4 marker:text-indigo-600">
-                <li class="pl-4"><strong class="font-bold">Hilos a Nivel de Usuario (ULT):</strong> Gestión interna de la aplicación. Son muy **rápidos** de crear, pero un bloqueo detiene todo el proceso (modelo *muchos a uno*).</li>
-                <li class="pl-4"><strong class="font-bold">Hilos a Nivel de Kernel (KLT):</strong> Gestionados por el sistema operativo. Son más lentos, pero permiten el **paralelismo real** y el bloqueo de un hilo no afecta a los demás (modelo *uno a uno*).</li>
-                <li class="pl-4"><strong class="font-bold">Modelos Híbridos (Muchos a Muchos):</strong> Combinan la eficiencia de los ULT con la capacidad de paralelismo de los KLT, mapeando varios hilos de usuario a un número menor o igual de hilos del kernel.</li>
+                <li class="pl-4"><strong class="font-bold">Modelo Muchos a Uno (ULT):</strong> Varios hilos de usuario se mapean a un único hilo del kernel. 
+                    <p class="text-sm text-gray-600 mt-1">**Ventaja:** Gestión extremadamente **rápida** ya que no hay llamadas al kernel. **Desventaja:** El **bloqueo** de un solo hilo por una I/O detiene todo el proceso. No se logra verdadero paralelismo en multicore.</p>
+                </li>
+                <li class="pl-4"><strong class="font-bold">Modelo Uno a Uno (KLT):</strong> Cada hilo de usuario tiene un hilo de kernel dedicado. (Usado por Linux, Windows).
+                    <p class="text-sm text-gray-600 mt-1">**Ventaja:** Permite el **paralelismo real** en sistemas multinúcleo y el bloqueo de un hilo no afecta a los demás. **Desventaja:** Crear hilos es más **lento** porque implica una llamada al kernel y más sobrecarga de gestión para el SO.</p>
+                </li>
+                <li class="pl-4"><strong class="font-bold">Modelos Híbridos (Muchos a Muchos):</strong> Permite un número flexible de hilos de usuario que se mapean a un número menor o igual de hilos del kernel.
+                    <p class="text-sm text-gray-600 mt-1">**Ventaja:** Intenta combinar la **eficiencia** de la gestión a nivel de usuario con la capacidad de **paralelismo** proporcionada por el kernel. **Desventaja:** Es el modelo más **complejo** de implementar y gestionar.</p>
+                </li>
             </ul>
         </section>
 
@@ -155,22 +161,29 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             
             <section class="p-6 bg-green-50 rounded-xl shadow-lg border border-green-200">
-                <h2 class="text-2xl font-bold mb-4 text-green-700 border-l-4 border-green-500 pl-3">5. Ventajas del Multihilo</h2>
-                <p class="text-base sm:text-lg leading-relaxed mb-4 text-gray-700">El multihilo es un pilar del software moderno gracias a sus beneficios:</p>
+                <h2 class="text-2xl font-bold mb-4 text-green-700 border-l-4 border-green-500 pl-3">5. Ventajas y Métricas de Eficiencia del Multihilo</h2>
+                <p class="text-base sm:text-lg leading-relaxed mb-4 text-gray-700">La adopción del multihilo se justifica por métricas de rendimiento y eficiencia, a pesar de los riesgos de sincronización.</p>
                 
                 <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3 marker:text-green-600">
-                    <li class="pl-4"><strong class="font-bold">📈 Mejora del Rendimiento:</strong> Al dividir tareas en hilos para la ejecución paralela en múltiples núcleos.</li>
-                    <li class="pl-4"><strong class="font-bold">🖱️ Mayor Capacidad de Respuesta:</strong> La UI se mantiene fluida mientras las operaciones pesadas se ejecutan en segundo plano.</li>
+                    <li class="pl-4"><strong class="font-bold">📈 Mejora de Rendimiento (Speedup):</strong> La principal razón. Se busca reducir el tiempo total de ejecución (Wall Clock Time) dividiendo la carga computacional en partes paralelas.</li>
+                    <li class="pl-4"><strong class="font-bold">🛠️ Economía en Creación:</strong> Crear un nuevo proceso puede consumir cientos de miles de ciclos de CPU. Crear un hilo solo requiere asignar una pila y una estructura de control (unos pocos miles de ciclos), lo que es mucho más económico.</li>
+                    <li class="pl-4"><strong class="font-bold">♻️ Bajo Coste de Conmutación:</strong> El **cambio de contexto** entre hilos del mismo proceso es mucho más rápido que entre procesos, ya que no requiere el costoso cambio del mapa de memoria virtual (TLB flush).</li>
                 </ul>
             </section>
 
             <section class="p-6 bg-red-50 rounded-xl shadow-lg border border-red-200">
-                <h2 class="text-2xl font-bold mb-4 text-red-700 border-l-4 border-red-500 pl-3">6. Desafíos de Sincronización</h2>
-                <p class="text-base sm:text-lg leading-relaxed mb-4 text-gray-700">La memoria compartida, aunque eficiente, introduce riesgos de errores difíciles de detectar.</p>
+                <h2 class="text-2xl font-bold mb-4 text-red-700 border-l-4 border-red-500 pl-3">6. Sincronización y Peligros de la Memoria Compartida</h2>
+                <p class="text-base sm:text-lg leading-relaxed mb-4 text-gray-700">La dificultad del multihilo radica en gestionar el acceso concurrente a los datos compartidos de forma segura.</p>
                 
+                <h3 class="text-xl font-semibold text-red-600 mb-3">Desafíos Principales</h3>
                 <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3 marker:text-red-600">
-                    <li class="pl-4"><strong class="font-bold">Condiciones de Carrera:</strong> El resultado depende del orden de ejecución. Solución: <code class="bg-red-200 rounded-md px-1 font-mono">mutexes</code> o <code class="bg-red-200 rounded-md px-1 font-mono">semáforos</code>.</li>
-                    <li class="pl-4"><strong class="font-bold">Interbloqueos (Deadlocks):</strong> Dos o más hilos se bloquean mutuamente esperando recursos.</li>
+                    <li class="pl-4"><strong class="font-bold">Condiciones de Carrera:</strong> Ocurren cuando dos o más hilos acceden y modifican datos compartidos sin un control de acceso adecuado, haciendo que el resultado sea indeterminado. La solución es garantizar la **Exclusión Mutua** en las **Secciones Críticas** del código.</li>
+                    <li class="pl-4"><strong class="font-bold">Interbloqueos (Deadlocks):</strong> Es la falla más grave. Ocurre cuando se cumplen las **cuatro condiciones de Coffman** simultáneamente: Exclusión Mutua, Retención y Espera, No Preemption (No se puede forzar la liberación) y Espera Circular.
+                        <div class="mt-2 p-3 bg-red-100 rounded-lg border border-red-300">
+                            <strong class="text-red-700">📌 La Cena de los Filósofos (Ejemplo Clásico de Espera Circular):</strong> Este problema ilustra el interbloqueo con 5 filósofos (hilos) y 5 tenedores (recursos). Si cada filósofo toma un tenedor de un lado y luego espera por el otro (una secuencia de toma ineficiente), se establece una **cadena de espera circular** donde nadie puede obtener los dos recursos que necesita, y por lo tanto, nadie come ni libera recursos. La solución a menudo implica un **orden jerárquico** en la toma de recursos (p. ej., el último filósofo debe tomar el tenedor en orden inverso).
+                        </div>
+                    </li>
+                    <li class="pl-4"><strong class="font-bold">Inanición (Starvation):</strong> Un hilo nunca obtiene los recursos que necesita o nunca se le asigna tiempo de CPU debido a una planificación injusta, aunque los recursos estén disponibles.</li>
                 </ul>
             </section>
         </div>
@@ -178,29 +191,29 @@
         <hr class="my-12 border-blue-200">
 
         <section class="mb-14">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-6">7. Aplicaciones Reales: ¿Dónde se Usa?</h2>
-            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">La programación multihilo es **omnipresente** en la tecnología actual.</p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6">7. Aplicaciones Reales: ¿Dónde se Usa el Multihilo?</h2>
+            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">La programación multihilo es la base para lograr la simultaneidad y capacidad de respuesta en casi todos los sistemas operativos modernos y aplicaciones de alto rendimiento.</p>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 
                 <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
                     <h3 class="font-extrabold text-indigo-700 text-xl mb-1">🎮 Videojuegos</h3>
-                    <p class="text-sm text-gray-600">Física, IA y renderizado se ejecutan en núcleos separados simultáneamente.</p>
+                    <p class="text-sm text-gray-600">Un hilo maneja la IA, otro la física, otro el sonido, y múltiples hilos en la GPU se dedican al renderizado gráfico.</p>
                 </div>
                 
                 <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
                     <h3 class="font-extrabold text-indigo-700 text-xl mb-1">🌐 Servidores Web</h3>
-                    <p class="text-sm text-gray-600">Un hilo por cada cliente permite gestionar miles de solicitudes concurrentes.</p>
+                    <p class="text-sm text-gray-600">Modelo de hilo por solicitud: un hilo gestiona cada conexión entrante, permitiendo el servicio a miles de clientes concurrentes (e.g., Apache, Nginx).</p>
                 </div>
                 
                 <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">💻 Navegadores Web</h3>
-                    <p class="text-sm text-gray-600">El hilo principal es la UI; otros hilos gestionan la descarga de datos.</p>
+                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">💻 Sistemas de Base de Datos</h3>
+                    <p class="text-sm text-gray-600">El procesamiento de consultas complejas (queries) se divide en tareas paralelas (p. ej., ordenar y filtrar datos) para reducir el tiempo de respuesta.</p>
                 </div>
                 
                 <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">📱 Dispositivos Móviles</h3>
-                    <p class="text-sm text-gray-600">Arquitectura <code class="bg-indigo-200 text-xs font-mono px-1">Big.LITTLE</code> de ARM para equilibrar potencia y batería.</p>
+                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">📱 Procesamiento Multimedia</h3>
+                    <p class="text-sm text-gray-600">La codificación y decodificación de video (H.264, VP9) es inherentemente paralela, asignando bloques de imagen a diferentes núcleos para un procesamiento rápido.</p>
                 </div>
             </div>
         </section>
@@ -209,8 +222,8 @@
 
         <section class="p-8 bg-blue-700 text-white rounded-2xl shadow-inner">
             <h2 class="text-3xl font-extrabold mb-4 border-b-2 border-blue-400 pb-2">8. Conclusión: El Paradigma del Paralelismo</h2>
-            <p class="text-lg leading-relaxed mb-4 font-light">El procesamiento multinúcleo y la programación multihilo han sido un cambio de paradigma que ha redefinido la computación moderna. La capacidad de un sistema para explotar el paralelismo es la medida clave de su potencia.</p>
-            <p class="text-lg leading-relaxed font-semibold">Comprender los hilos no es opcional: es esencial para desarrollar sistemas <strong class="text-yellow-300">eficientes y escalables</strong> en el mundo dominado por el paralelismo.</p>
+            <p class="text-lg leading-relaxed mb-4 font-light">El procesamiento multinúcleo y la programación multihilo representan el principal motor del crecimiento computacional actual. La gestión eficiente de la concurrencia es el desafío que separa una aplicación funcional de una aplicación de alto rendimiento.</p>
+            <p class="text-lg leading-relaxed font-semibold">El diseño de sistemas modernos exige un conocimiento profundo de la arquitectura de hilos para desarrollar software que no solo funcione, sino que maximice el potencial del hardware y evite fallos catastróficos como el interbloqueo.</p>
         </section>
         
     </main>
