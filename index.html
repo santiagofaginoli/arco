@@ -4,15 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentación: Procesamiento Multinúcleo e Hilos</title>
-    <!-- Incluir Tailwind CSS para estilos de utilidad -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Enlace a la fuente Inter de Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* Configuración de color principal: Azul Oscuro para un tono profesional */
+        :root {
+            --color-primary: #1e3a8a; /* Blue-800 */
+            --color-secondary: #3b82f6; /* Blue-500 */
+            --color-text-dark: #1f2937; /* Gray-800 */
+            --color-text-light: #4b5563; /* Gray-600 */
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            /* Fondo con gradiente sutil para mayor profundidad */
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%); 
+            color: var(--color-text-dark);
         }
+
+        /* Estilos de título principal */
+        h1 {
+            color: var(--color-primary);
+            border-bottom: 4px solid var(--color-secondary);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Estilos para títulos de sección */
+        h2 {
+            color: var(--color-primary);
+            border-left: 5px solid var(--color-secondary);
+            padding-left: 0.75rem;
+        }
+
+        /* Estilos de la tabla */
+        .styled-table thead {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
         /* Estilos para ocultar los botones de control al imprimir */
         @media print {
             .no-print {
@@ -24,158 +54,170 @@
                 margin: 0 !important;
                 padding: 0 !important;
                 width: 100% !important;
+                background-color: white !important; /* Asegurar fondo blanco para impresión */
             }
         }
     </style>
 </head>
-<body class="flex flex-col items-center p-8 bg-gray-100 min-h-screen text-gray-800">
+<body class="flex flex-col items-center p-4 sm:p-8 min-h-screen">
 
-    <!-- Contenedor principal de la presentación -->
-    <main class="document-container w-full max-w-5xl bg-white rounded-xl shadow-2xl p-10 lg:p-16">
+    <main class="document-container w-full max-w-6xl bg-white rounded-3xl shadow-2xl p-6 md:p-12 lg:p-16 transition-shadow duration-300 hover:shadow-3xl">
 
-        <!-- Título de la Presentación -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-extrabold text-blue-800 mb-2">Fundamentos del Procesamiento Multinúcleo y Hilos</h1>
-        </div>
+        <header class="text-center mb-12">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 mx-auto">
+                Fundamentos del Procesamiento Multinúcleo y Hilos
+            </h1>
+            <p class="text-lg text-gray-500 mt-2 font-light">Arquitectura de Sistemas y Programación Paralela</p>
+        </header>
 
-        <!-- Sección 1: La Evolución de la Computación -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">1. La Evolución de la Computación: Del Uninúcleo al Paralelismo</h2>
-            <p class="text-lg leading-relaxed">El rendimiento de las computadoras ya no depende de un solo procesador cada vez más rápido. Hace décadas, se alcanzó un límite físico para aumentar la velocidad del reloj de un solo núcleo debido a los problemas de calor. Para continuar la mejora del rendimiento, la industria de los microprocesadores se vio obligada a un cambio fundamental.</p>
-            <p class="text-lg leading-relaxed mt-4">La solución fue el <strong class="text-blue-600">procesamiento multinúcleo</strong>: la integración de múltiples unidades de procesamiento, o <strong class="text-blue-600">núcleos</strong>, en un solo chip. Esto permite que una computadora ejecute múltiples tareas simultáneamente, distribuyendo la carga de trabajo y aprovechando el poder de procesamiento en paralelo.  El IBM Power 4, lanzado en 2000, es reconocido como el pionero en esta arquitectura.</p>
+        <section class="mb-14 p-6 bg-gray-50 rounded-xl">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4">1. La Evolución de la Computación: Del Uninúcleo al Paralelismo</h2>
+            <p class="text-base sm:text-lg leading-relaxed text-gray-700">El rendimiento ya no depende de un solo procesador cada vez más rápido. Hace décadas, se alcanzó un límite físico para aumentar la velocidad del reloj debido a los problemas de calor. Para continuar la mejora, la industria se vio obligada a un cambio fundamental.</p>
+            <p class="text-base sm:text-lg leading-relaxed mt-4 p-4 border-l-4 border-blue-500 bg-blue-50">La solución fue el <strong class="text-blue-700 font-extrabold">procesamiento multinúcleo</strong>: la integración de múltiples unidades de procesamiento, o <strong class="text-blue-700 font-extrabold">núcleos</strong>, en un solo chip. Esto permite que una computadora ejecute múltiples tareas <strong class="underline">simultáneamente</strong>, aprovechando el poder de procesamiento en paralelo. El IBM Power 4 (2000) es reconocido como el pionero.</p>
         </section>
 
-        <hr class="my-10 border-gray-300">
+        <hr class="my-12 border-blue-200">
 
-        <!-- Sección 2: Definiciones Clave -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">2. Definiciones Clave: Núcleos, Hilos y Procesos</h2>
+        <section class="mb-14">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6">2. Definiciones Clave: Núcleos, Hilos y Procesos</h2>
             
-            <h3 class="text-2xl font-semibold text-gray-600 mb-2">Unidades de Hardware</h3>
-            <ul class="list-disc list-inside text-lg leading-relaxed mb-6">
-                <li class="mb-2"><strong class="font-semibold">Núcleo de Procesamiento:</strong> Es la unidad fundamental de una CPU. Un procesador multinúcleo tiene dos o más de estos núcleos independientes, capaces de ejecutar instrucciones simultáneamente.</li>
-                <li class="mb-2"><strong class="font-semibold">Hyper-Threading (Intel) / SMT (AMD):</strong> Estas tecnologías permiten que un solo núcleo físico actúe como si fuera dos núcleos lógicos. Esto optimiza el uso de recursos y mejora el rendimiento en la multitarea al permitir que un núcleo maneje múltiples hilos de ejecución de manera concurrente.</li>
-            </ul>
-
-            <h3 class="text-2xl font-semibold text-gray-600 mb-2">Unidades de Software</h3>
-            <ul class="list-disc list-inside text-lg leading-relaxed">
-                <li class="mb-2"><strong class="font-semibold">Proceso:</strong> Una instancia en ejecución de un programa. Los procesos son <strong class="text-blue-600">"pesados"</strong> porque cada uno tiene su propio espacio de memoria y recursos, garantizando un estricto aislamiento. Crear y gestionar procesos es costoso para el sistema.</li>
-                <li class="mb-2"><strong class="font-semibold">Hilo (o Thread):</strong> Una unidad de ejecución <strong class="text-blue-600">"ligera"</strong> dentro de un proceso. Todos los hilos de un mismo proceso comparten el mismo espacio de memoria y recursos. Esto hace que la comunicación y el cambio entre hilos sea mucho más rápido y eficiente.</li>
-            </ul>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">⚙️ Unidades de Hardware</h3>
+                    <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3">
+                        <li><strong class="font-bold">Núcleo de Procesamiento:</strong> La unidad fundamental de una CPU, capaz de ejecutar instrucciones. Un chip moderno tiene dos o más.</li>
+                        <li><strong class="font-bold">Hyper-Threading / SMT:</strong> Tecnologías que permiten que un solo núcleo físico actúe como si fuera <strong class="text-indigo-600">dos núcleos lógicos</strong>, mejorando la concurrencia y la utilización de recursos.</li>
+                    </ul>
+                </div>
+                
+                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">💾 Unidades de Software</h3>
+                    <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3">
+                        <li><strong class="font-bold">Proceso:</strong> Una instancia en ejecución de un programa. Son <strong class="text-red-500">"pesados"</strong> (aislamiento estricto de memoria).</li>
+                        <li><strong class="font-bold">Hilo (o Thread):</strong> Una unidad de ejecución <strong class="text-green-600">"ligera"</strong> dentro de un proceso. Comparten memoria, por lo que su gestión es más rápida y eficiente.</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-        <hr class="my-10 border-gray-300">
+        <hr class="my-12 border-blue-200">
 
-        <!-- Sección 3: Concurrencia vs. Paralelismo -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">3. Concurrencia vs. Paralelismo: Conceptos Esenciales</h2>
-            <p class="text-lg leading-relaxed mb-6">La diferencia entre concurrencia y paralelismo es crucial: </p>
+        <section class="mb-14">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6">3. Concurrencia vs. Paralelismo: Conceptos Esenciales</h2>
+            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">La diferencia entre gestionar tareas a lo largo del tiempo (concurrencia) y ejecutarlas al mismo tiempo (paralelismo) es fundamental. </p>
             
-            <div class="overflow-x-auto">
-                <table class="w-full text-lg text-left text-gray-500 rounded-lg overflow-hidden shadow-lg">
-                    <thead class="text-sm text-gray-700 uppercase bg-gray-50">
+            <div class="overflow-x-auto rounded-xl shadow-xl">
+                <table class="w-full text-base sm:text-lg text-left styled-table">
+                    <thead class="text-xs uppercase lg:text-sm">
                         <tr>
-                            <th scope="col" class="px-6 py-3">Característica</th>
-                            <th scope="col" class="px-6 py-3">Concurrencia</th>
-                            <th scope="col" class="px-6 py-3">Paralelismo</th>
+                            <th scope="col" class="px-4 py-3 sm:px-6">Característica</th>
+                            <th scope="col" class="px-4 py-3 sm:px-6">Concurrencia (Aparentemente Simultáneo)</th>
+                            <th scope="col" class="px-4 py-3 sm:px-6">Paralelismo (Realmente Simultáneo)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="bg-white border-b hover:bg-gray-50">
-                            <td class="px-6 py-4 font-medium text-gray-900">Naturaleza</td>
-                            <td class="px-6 py-4"><strong>Diseño de software.</strong> Se trata de gestionar múltiples tareas a lo largo del tiempo.</td>
-                            <td class="px-6 py-4"><strong>Ejecución de hardware.</strong> Se refiere a la ejecución real y simultánea de tareas.</td>
+                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Naturaleza</td>
+                            <td class="px-4 py-4 sm:px-6"><strong>Diseño de software.</strong> Se enfoca en la gestión de tareas.</td>
+                            <td class="px-4 py-4 sm:px-6"><strong>Ejecución de hardware.</strong> Se enfoca en la ejecución real.</td>
                         </tr>
                         <tr class="bg-white border-b hover:bg-gray-50">
-                            <td class="px-6 py-4 font-medium text-gray-900">Hardware</td>
-                            <td class="px-6 py-4">Puede funcionar en un solo procesador. El sistema operativo alterna rápidamente entre las tareas.</td>
-                            <td class="px-6 py-4">Requiere múltiples núcleos o procesadores para la ejecución simultánea.</td>
+                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Hardware</td>
+                            <td class="px-4 py-4 sm:px-6">Puede funcionar en **un solo procesador**.</td>
+                            <td class="px-4 py-4 sm:px-6">Requiere **múltiples núcleos** (multinúcleo).</td>
                         </tr>
                         <tr class="bg-white hover:bg-gray-50">
-                            <td class="px-6 py-4 font-medium text-gray-900">Ejemplo</td>
-                            <td class="px-6 py-4">Un solo cocinero que salta entre cortar verduras, revolver una sopa y batir huevos.</td>
-                            <td class="px-6 py-4">Dos cocineros trabajando juntos para preparar un plato, uno corta y el otro revuelve al mismo tiempo.</td>
+                            <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Metáfora</td>
+                            <td class="px-4 py-4 sm:px-6">Un <strong class="text-orange-500">solo cocinero</strong> que salta entre tareas.</td>
+                            <td class="px-4 py-4 sm:px-6">Dos <strong class="text-green-500">cocineros</strong> trabajando <strong class="font-extrabold">al mismo tiempo</strong>.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <hr class="my-10 border-gray-300">
+        <hr class="my-12 border-blue-200">
 
-        <!-- Sección 4: Modelos de Hilos en Sistemas Operativos -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">4. Modelos de Hilos en Sistemas Operativos</h2>
-            <p class="text-lg leading-relaxed mb-6">La relación entre los hilos del programa y los hilos del sistema operativo determina la eficiencia y el rendimiento de la aplicación.</p>
+        <section class="mb-14 p-6 border border-dashed border-indigo-300 rounded-xl">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6">4. Modelos de Hilos en Sistemas Operativos</h2>
+            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">La eficiencia depende de cómo el sistema operativo mapea los hilos de tu programa a los hilos que el kernel gestiona.</p>
             
-            <ul class="list-disc list-inside text-lg leading-relaxed">
-                <li class="mb-2"><strong class="font-semibold">Hilos a Nivel de Usuario (ULT):</strong> La gestión de los hilos ocurre completamente dentro de la aplicación, sin la participación del kernel. Son muy rápidos, pero si uno se bloquea (por ejemplo, al acceder a un disco), todo el proceso se detiene.</li>
-                <li class="mb-2"><strong class="font-semibold">Hilos a Nivel de Kernel (KLT):</strong> El kernel del sistema operativo gestiona cada hilo. Son más lentos de crear, pero permiten el paralelismo real y evitan que un hilo bloqueado afecte a los demás.</li>
-                <li class="mb-2"><strong class="font-semibold">Modelos Híbridos (Muchos a Muchos):</strong> Un número variable de hilos de usuario se mapea a un número menor o igual de hilos del kernel, combinando la eficiencia de los ULT con la capacidad de paralelismo de los KLT.</li>
+            <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-4 marker:text-indigo-600">
+                <li class="pl-4"><strong class="font-bold">Hilos a Nivel de Usuario (ULT):</strong> Gestión interna de la aplicación. Son muy **rápidos** de crear, pero un bloqueo detiene todo el proceso (modelo *muchos a uno*).</li>
+                <li class="pl-4"><strong class="font-bold">Hilos a Nivel de Kernel (KLT):</strong> Gestionados por el sistema operativo. Son más lentos, pero permiten el **paralelismo real** y el bloqueo de un hilo no afecta a los demás (modelo *uno a uno*).</li>
+                <li class="pl-4"><strong class="font-bold">Modelos Híbridos (Muchos a Muchos):</strong> Combinan la eficiencia de los ULT con la capacidad de paralelismo de los KLT, mapeando varios hilos de usuario a un número menor o igual de hilos del kernel.</li>
             </ul>
         </section>
 
-        <hr class="my-10 border-gray-300">
+        <hr class="my-12 border-blue-200">
 
-        <!-- Sección 5: Ventajas de la Programación Multihilo -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">5. Ventajas de la Programación Multihilo</h2>
-            <p class="text-lg leading-relaxed mb-6">El multihilo es un pilar del software moderno gracias a sus beneficios.</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             
-            <ul class="list-disc list-inside text-lg leading-relaxed">
-                <li class="mb-2"><strong class="font-semibold">Mejora del Rendimiento:</strong> Las tareas computacionalmente intensivas pueden dividirse en hilos y ejecutarse en paralelo en múltiples núcleos, reduciendo el tiempo de ejecución.</li>
-                <li class="mb-2"><strong class="font-semibold">Mayor Capacidad de Respuesta:</strong> Permite que las aplicaciones con interfaz de usuario sigan respondiendo a la interacción del usuario mientras realizan operaciones pesadas en segundo plano.</li>
-            </ul>
+            <section class="p-6 bg-green-50 rounded-xl shadow-lg border border-green-200">
+                <h2 class="text-2xl font-bold mb-4 text-green-700 border-l-4 border-green-500 pl-3">5. Ventajas del Multihilo</h2>
+                <p class="text-base sm:text-lg leading-relaxed mb-4 text-gray-700">El multihilo es un pilar del software moderno gracias a sus beneficios:</p>
+                
+                <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3 marker:text-green-600">
+                    <li class="pl-4"><strong class="font-bold">📈 Mejora del Rendimiento:</strong> Al dividir tareas en hilos para la ejecución paralela en múltiples núcleos.</li>
+                    <li class="pl-4"><strong class="font-bold">🖱️ Mayor Capacidad de Respuesta:</strong> La UI se mantiene fluida mientras las operaciones pesadas se ejecutan en segundo plano.</li>
+                </ul>
+            </section>
+
+            <section class="p-6 bg-red-50 rounded-xl shadow-lg border border-red-200">
+                <h2 class="text-2xl font-bold mb-4 text-red-700 border-l-4 border-red-500 pl-3">6. Desafíos de Sincronización</h2>
+                <p class="text-base sm:text-lg leading-relaxed mb-4 text-gray-700">La memoria compartida, aunque eficiente, introduce riesgos de errores difíciles de detectar.</p>
+                
+                <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3 marker:text-red-600">
+                    <li class="pl-4"><strong class="font-bold">Condiciones de Carrera:</strong> El resultado depende del orden de ejecución. Solución: <code class="bg-red-200 rounded-md px-1 font-mono">mutexes</code> o <code class="bg-red-200 rounded-md px-1 font-mono">semáforos</code>.</li>
+                    <li class="pl-4"><strong class="font-bold">Interbloqueos (Deadlocks):</strong> Dos o más hilos se bloquean mutuamente esperando recursos.</li>
+                </ul>
+            </section>
+        </div>
+
+        <hr class="my-12 border-blue-200">
+
+        <section class="mb-14">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6">7. Aplicaciones Reales: ¿Dónde se Usa?</h2>
+            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">La programación multihilo es **omnipresente** en la tecnología actual.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+                
+                <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">🎮 Videojuegos</h3>
+                    <p class="text-sm text-gray-600">Física, IA y renderizado se ejecutan en núcleos separados simultáneamente.</p>
+                </div>
+                
+                <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">🌐 Servidores Web</h3>
+                    <p class="text-sm text-gray-600">Un hilo por cada cliente permite gestionar miles de solicitudes concurrentes.</p>
+                </div>
+                
+                <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">💻 Navegadores Web</h3>
+                    <p class="text-sm text-gray-600">El hilo principal es la UI; otros hilos gestionan la descarga de datos.</p>
+                </div>
+                
+                <div class="p-5 bg-indigo-50 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+                    <h3 class="font-extrabold text-indigo-700 text-xl mb-1">📱 Dispositivos Móviles</h3>
+                    <p class="text-sm text-gray-600">Arquitectura <code class="bg-indigo-200 text-xs font-mono px-1">Big.LITTLE</code> de ARM para equilibrar potencia y batería.</p>
+                </div>
+            </div>
         </section>
 
-        <hr class="my-10 border-gray-300">
+        <hr class="my-12 border-blue-200">
 
-        <!-- Sección 6: Sincronización y Problemas Comunes -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">6. Sincronización y Problemas Comunes</h2>
-            <p class="text-lg leading-relaxed mb-6">La memoria compartida de los hilos, aunque eficiente, introduce riesgos de errores difíciles de detectar.</p>
-            
-            <h3 class="text-2xl font-semibold text-gray-600 mb-2">Desafíos de Sincronización</h3>
-            <ul class="list-disc list-inside text-lg leading-relaxed">
-                <li class="mb-2"><strong class="font-semibold">Condiciones de Carrera (Race Conditions):</strong> Ocurren cuando el resultado de un programa depende del orden de ejecución de los hilos. Un ejemplo clásico es un sistema bancario donde dos retiros simultáneos sin protección resultan en un débito incorrecto. Se solucionan con <strong class="text-blue-600">mutexes</strong> y <strong class="text-blue-600">semáforos</strong>.</li>
-                <li class="mb-2"><strong class="font-semibold">Interbloqueos (Deadlocks):</strong> Una situación en la que dos o más hilos se bloquean mutuamente, esperando que el otro libere un recurso que necesita.  Son errores muy difíciles de depurar. La famosa "Cena de los Filósofos" es un ejemplo conceptual de este problema.</li>
-                <li class="mb-2"><strong class="font-semibold">Inanición (Starvation) y Bloqueo Activo (Livelock):</strong> Problemas menos comunes pero igualmente graves, donde los hilos no progresan debido a una planificación injusta o a acciones repetidas e inútiles en respuesta a otros hilos.</li>
-            </ul>
-        </section>
-
-        <hr class="my-10 border-gray-300">
-
-        <!-- Sección 7: Aplicaciones Reales -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">7. Aplicaciones Reales</h2>
-            <p class="text-lg leading-relaxed mb-6">La programación multihilo es omnipresente en la tecnología actual.</p>
-            
-            <ul class="list-disc list-inside text-lg leading-relaxed">
-                <li class="mb-2"><strong class="font-semibold">Videojuegos:</strong> Permite la ejecución simultánea de la física, la inteligencia artificial y el renderizado en diferentes núcleos.</li>
-                <li class="mb-2"><strong class="font-semibold">Servidores y Bases de Datos:</strong> Permite a los servidores web gestionar miles de solicitudes concurrentes al usar un hilo para cada cliente.</li>
-                <li class="mb-2"><strong class="font-semibold">Navegadores Web:</strong> El hilo principal gestiona la interfaz, mientras que los hilos secundarios manejan tareas pesadas, como la descarga de datos o la ejecución de scripts, para mantener el navegador fluido y con capacidad de respuesta.</li>
-                <li class="mb-2"><strong class="font-semibold">Dispositivos Móviles:</strong> La arquitectura <code class="bg-gray-200 rounded-md px-1 py-0.5 text-sm font-mono">Big.LITTLE</code> de ARM utiliza núcleos de alto rendimiento y bajo consumo en el mismo chip para equilibrar la potencia y la duración de la batería.</li>
-            </ul>
-        </section>
-
-        <hr class="my-10 border-gray-300">
-
-        <!-- Sección 8: Conclusión -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-700 mb-4">8. Conclusión</h2>
-            <p class="text-lg leading-relaxed mb-6">El procesamiento multinúcleo y la programación multihilo han sido un cambio de paradigma que ha redefinido el panorama de la computación. Hoy en día, la capacidad de un sistema para gestionar y explotar el paralelismo es la medida de su potencia. La programación multihilo ha surgido como el mecanismo de software esencial para que los programas aprovechen esta capacidad de hardware, permitiendo una mayor capacidad de respuesta, una mejor utilización de los recursos y un rendimiento superior.</p>
-            <p class="text-lg leading-relaxed">A pesar de los desafíos de sincronización que introduce, comprender sus principios es esencial para desarrollar sistemas eficientes y escalables en un mundo dominado por el paralelismo.</p>
+        <section class="p-8 bg-blue-700 text-white rounded-2xl shadow-inner">
+            <h2 class="text-3xl font-extrabold mb-4 border-b-2 border-blue-400 pb-2">8. Conclusión: El Paradigma del Paralelismo</h2>
+            <p class="text-lg leading-relaxed mb-4 font-light">El procesamiento multinúcleo y la programación multihilo han sido un cambio de paradigma que ha redefinido la computación moderna. La capacidad de un sistema para explotar el paralelismo es la medida clave de su potencia.</p>
+            <p class="text-lg leading-relaxed font-semibold">Comprender los hilos no es opcional: es esencial para desarrollar sistemas <strong class="text-yellow-300">eficientes y escalables</strong> en el mundo dominado por el paralelismo.</p>
         </section>
         
     </main>
 
-    <script>
-        // Funcionalidad del botón de impresión
-        document.getElementById('print-button').addEventListener('click', function() {
-            window.print();
-        });
-    </script>
+    <footer class="mt-10 text-gray-600 text-sm text-center no-print">
+        <p>© Diseñado por Faginoli Oyarzun y Calviño.</p>
+    </footer>
 
 </body>
-
 </html>
