@@ -64,16 +64,16 @@
 
         <header class="text-center mb-12">
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 mx-auto">
-                Procesamiento Multinúcleo e Hilos
+                Fundamentos Profundos del Procesamiento Multinúcleo y Hilos
             </h1>
-            <p class="text-lg text-gray-500 mt-2 font-light">Arquitectura del Computador</p>
+            <p class="text-lg text-gray-500 mt-2 font-light">Arquitectura de Sistemas, Concurrencia y Sincronización Avanzada</p>
         </header>
 
         <section class="mb-14 p-6 bg-gray-50 rounded-xl">
             <h2 class="text-2xl sm:text-3xl font-bold mb-4">1. La Evolución de la Computación: Del Uninúcleo al Paralelismo</h2>
-            <p class="text-base sm:text-lg leading-relaxed text-gray-700">Históricamente, el aumento de la velocidad de las computadoras se lograba incrementando la **frecuencia (GHz)**. Sin embargo, este camino se encontró con el muro de la energía: aumentar la frecuencia generaba una cantidad de calor (potencia) insostenible. Este fenómeno marcó el fin de la **Ley de Moore** en términos de aumento de velocidad de reloj.</p>
-            <p class="text-base sm:text-lg leading-relaxed mt-4 p-4 border-l-4 border-blue-500 bg-blue-50">La solución fue el <strong class="text-blue-700 font-extrabold">procesamiento multinúcleo</strong>: pasar de una ejecución serial rápida a una **ejecución paralela** simultánea. Esto no solo distribuye la carga de trabajo, sino que permite que la velocidad de procesamiento crezca linealmente con el número de núcleos, respetando las limitaciones físicas de temperatura y consumo de energía. El <strong class="font-extrabold">IBM Power 4 (2000)</strong> formalizó esta transición.</p>
-            <p class="text-base sm:text-lg leading-relaxed mt-4 text-gray-700">⚠️ **El Límite de la Ley de Amdahl:** Este principio establece que la ganancia de velocidad (speedup) obtenida al paralelizar un programa está limitada por la fracción del código que debe ejecutarse de forma serial. Por más núcleos que se agreguen, el rendimiento nunca superará la velocidad de esa parte serial.</p>
+            <p class="text-base sm:text-lg leading-relaxed text-gray-700">Históricamente, el aumento de la velocidad de las computadoras se lograba incrementando la <strong>frecuencia (GHz)</strong>. Sin embargo, este camino se encontró con el muro de la energía: aumentar la frecuencia generaba una cantidad de calor (potencia) insostenible. Este fenómeno marcó el fin de la <strong>Ley de Moore</strong> en términos de aumento de velocidad de reloj.</p>
+            <p class="text-base sm:text-lg leading-relaxed mt-4 p-4 border-l-4 border-blue-500 bg-blue-50">La solución fue el <strong class="text-blue-700 font-extrabold">procesamiento multinúcleo</strong>: pasar de una ejecución serial rápida a una <strong class="text-blue-700 font-extrabold">ejecución paralela</strong> simultánea. Esto no solo distribuye la carga de trabajo, sino que permite que la velocidad de procesamiento crezca linealmente con el número de núcleos, respetando las limitaciones físicas de temperatura y consumo de energía. El <strong class="font-extrabold">IBM Power 4 (2000)</strong> formalizó esta transición.</p>
+            <p class="text-base sm:text-lg leading-relaxed mt-4 text-gray-700">⚠️ <strong>El Límite de la Ley de Amdahl:</strong> Este principio establece que la ganancia de velocidad (speedup) obtenida al paralelizar un programa está limitada por la fracción del código que debe ejecutarse de forma serial. Por más núcleos que se agreguen, el rendimiento nunca superará la velocidad de esa parte serial.</p>
         </section>
 
         <hr class="my-12 border-blue-200">
@@ -86,7 +86,7 @@
                 <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
                     <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">⚙️ Unidades de Hardware y Abstracción</h3>
                     <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3">
-                        <li><strong class="font-bold">Núcleo Físico:</strong> Unidad de procesamiento con su propia **unidad de control y unidades aritmético-lógicas (ALU)**. Es el verdadero motor de ejecución independiente.</li>
+                        <li><strong class="font-bold">Núcleo Físico:</strong> Unidad de procesamiento con su propia<strong class="font-bold">unidad de control y unidades aritmético-lógicas (ALU)</strong>. Es el verdadero motor de ejecución independiente.</li>
                         <li><strong class="font-bold">Hyper-Threading / SMT:</strong> Permite que un solo núcleo físico gestione el estado (registros, caché) de dos hilos simultáneamente. Cuando un hilo se detiene para esperar datos (latencia de memoria), el núcleo salta inmediatamente al otro hilo. Esto resulta en <strong class="text-indigo-600">dos núcleos lógicos</strong> por núcleo físico.</li>
                     </ul>
                 </div>
@@ -94,8 +94,8 @@
                 <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
                     <h3 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">💾 Unidades de Software (Contextos de Ejecución)</h3>
                     <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3">
-                        <li><strong class="font-bold">Proceso:</strong> Es el **contenedor de recursos** completo. Incluye un espacio de direcciones de memoria virtual dedicado y privado, archivos abiertos y estructuras de datos del kernel. Crearlos es <strong class="text-red-500">lento</strong> (coste de crear la estructura de memoria).</li>
-                        <li><strong class="font-bold">Hilo (o Thread):</strong> Es la **secuencia de ejecución** dentro de un proceso. Los hilos dentro del mismo proceso <strong class="font-extrabold text-green-600">comparten el mismo espacio de direcciones y recursos</strong> (heap, código, datos), pero cada uno tiene su propia pila y registros. Crearlos es <strong class="text-green-600">rápido</strong>.</li>
+                        <li><strong class="font-bold">Proceso:</strong> Es el <strong class="font-bold">contenedor de recursos</strong> completo. Incluye un espacio de direcciones de memoria virtual dedicado y privado, archivos abiertos y estructuras de datos del kernel. Crearlos es <strong class="text-red-500">lento</strong> (coste de crear la estructura de memoria).</li>
+                        <li><strong class="font-bold">Hilo (o Thread):</strong> Es la <strong class="font-bold">secuencia de ejecución</strong> dentro de un proceso. Los hilos dentro del mismo proceso <strong class="font-extrabold text-green-600">comparten el mismo espacio de direcciones y recursos</strong> (heap, código, datos), pero cada uno tiene su propia pila y registros. Crearlos es <strong class="text-green-600">rápido</strong>.</li>
                     </ul>
                 </div>
             </div>
@@ -119,18 +119,18 @@
                     <tbody>
                         <tr class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Definición</td>
-                            <td class="px-4 py-4 sm:px-6">Capacidad de gestionar **múltiples tareas a lo largo de un período**, mediante cambio de contexto.</td>
-                            <td class="px-4 py-4 sm:px-6">Capacidad de ejecutar **múltiples tareas exactamente al mismo instante** en diferentes unidades.</td>
+                            <td class="px-4 py-4 sm:px-6">Capacidad de gestionar <strong class="font-bold">múltiples tareas a lo largo de un período</strong>, mediante cambio de contexto.</td>
+                            <td class="px-4 py-4 sm:px-6">Capacidad de ejecutar <strong class="font-bold">múltiples tareas exactamente al mismo instante</strong> en diferentes unidades.</td>
                         </tr>
                         <tr class="bg-white border-b hover:bg-gray-50">
                             <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Requisito Mínimo</td>
-                            <td class="px-4 py-4 sm:px-6">Solo requiere **un núcleo** (uniprocesador).</td>
-                            <td class="px-4 py-4 sm:px-6">Requiere **múltiples núcleos** (multinúcleo).</td>
+                            <td class="px-4 py-4 sm:px-6">Solo requiere <strong class="font-bold">un núcleo</strong> (uniprocesador).</td>
+                            <td class="px-4 py-4 sm:px-6">Requiere <strong class="font-bold">múltiples núcleos</strong> (multinúcleo).</td>
                         </tr>
                         <tr class="bg-white hover:bg-gray-50">
                             <td class="px-4 py-4 sm:px-6 font-semibold text-gray-900">Impacto</td>
-                            <td class="px-4 py-4 sm:px-6">Mejora el **uso del sistema** y la capacidad de respuesta.</td>
-                            <td class="px-4 py-4 sm:px-6">Mejora el **rendimiento total** y reduce el tiempo de finalización.</td>
+                            <td class="px-4 py-4 sm:px-6">Mejora el <strong class="font-bold">uso del sistema</strong> y la capacidad de respuesta.</td>
+                            <td class="px-4 py-4 sm:px-6">Mejora el <strong class="font-bold">rendimiento total</strong> y reduce el tiempo de finalización.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -141,17 +141,17 @@
 
         <section class="mb-14 p-6 border border-dashed border-indigo-300 rounded-xl">
             <h2 class="text-2xl sm:text-3xl font-bold mb-6">4. Modelos de Hilos en Sistemas Operativos: El Mapeo Lógico</h2>
-            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">El modelo de hilos determina qué tan bien un programa puede explotar el paralelismo del hardware, en función de cómo el **sistema operativo (kernel)** ve y gestiona los hilos creados por el programador (hilos de usuario).</p>
+            <p class="text-base sm:text-lg leading-relaxed mb-6 text-gray-700">El modelo de hilos determina qué tan bien un programa puede explotar el paralelismo del hardware, en función de cómo el <strong class="font-bold">sistema operativo (kernel)</strong> ve y gestiona los hilos creados por el programador (hilos de usuario).</p>
             
             <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-4 marker:text-indigo-600">
                 <li class="pl-4"><strong class="font-bold">Modelo Muchos a Uno (ULT):</strong> Varios hilos de usuario se mapean a un único hilo del kernel. 
-                    <p class="text-sm text-gray-600 mt-1">**Ventaja:** Gestión extremadamente **rápida** ya que no hay llamadas al kernel. **Desventaja:** El **bloqueo** de un solo hilo por una I/O detiene todo el proceso. No se logra verdadero paralelismo en multicore.</p>
+                    <p class="text-sm text-gray-600 mt-1"><strong>Ventaja:</strong> Gestión extremadamente <strong>rápida</strong> ya que no hay llamadas al kernel. <strong>Desventaja:</strong> El <strong>bloqueo</strong> de un solo hilo por una I/O detiene todo el proceso. No se logra verdadero paralelismo en multicore.</p>
                 </li>
                 <li class="pl-4"><strong class="font-bold">Modelo Uno a Uno (KLT):</strong> Cada hilo de usuario tiene un hilo de kernel dedicado. (Usado por Linux, Windows).
-                    <p class="text-sm text-gray-600 mt-1">**Ventaja:** Permite el **paralelismo real** en sistemas multinúcleo y el bloqueo de un hilo no afecta a los demás. **Desventaja:** Crear hilos es más **lento** porque implica una llamada al kernel y más sobrecarga de gestión para el SO.</p>
+                    <p class="text-sm text-gray-600 mt-1"><strong>Ventaja:</strong> Permite el <strong>paralelismo real</strong> en sistemas multinúcleo y el bloqueo de un hilo no afecta a los demás. <strong>Desventaja:</strong> Crear hilos es más <strong>lento</strong> porque implica una llamada al kernel y más sobrecarga de gestión para el SO.</p>
                 </li>
                 <li class="pl-4"><strong class="font-bold">Modelos Híbridos (Muchos a Muchos):</strong> Permite un número flexible de hilos de usuario que se mapean a un número menor o igual de hilos del kernel.
-                    <p class="text-sm text-gray-600 mt-1">**Ventaja:** Intenta combinar la **eficiencia** de la gestión a nivel de usuario con la capacidad de **paralelismo** proporcionada por el kernel. **Desventaja:** Es el modelo más **complejo** de implementar y gestionar.</p>
+                    <p class="text-sm text-gray-600 mt-1"><strong>Ventaja:</strong> Intenta combinar la <strong>eficiencia</strong> de la gestión a nivel de usuario con la capacidad de <strong>paralelismo</strong> proporcionada por el kernel. <strong>Desventaja:</strong> Es el modelo más <strong>complejo</strong> de implementar y gestionar.</p>
                 </li>
             </ul>
         </section>
@@ -167,7 +167,7 @@
                 <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3 marker:text-green-600">
                     <li class="pl-4"><strong class="font-bold">📈 Mejora de Rendimiento (Speedup):</strong> La principal razón. Se busca reducir el tiempo total de ejecución (Wall Clock Time) dividiendo la carga computacional en partes paralelas.</li>
                     <li class="pl-4"><strong class="font-bold">🛠️ Economía en Creación:</strong> Crear un nuevo proceso puede consumir cientos de miles de ciclos de CPU. Crear un hilo solo requiere asignar una pila y una estructura de control (unos pocos miles de ciclos), lo que es mucho más económico.</li>
-                    <li class="pl-4"><strong class="font-bold">♻️ Bajo Coste de Conmutación:</strong> El **cambio de contexto** entre hilos del mismo proceso es mucho más rápido que entre procesos, ya que no requiere el costoso cambio del mapa de memoria virtual (TLB flush).</li>
+                    <li class="pl-4"><strong class="font-bold">♻️ Bajo Coste de Conmutación:</strong> El <strong>cambio de contexto</strong> entre hilos del mismo proceso es mucho más rápido que entre procesos, ya que no requiere el costoso cambio del mapa de memoria virtual (TLB flush).</li>
                 </ul>
             </section>
 
@@ -177,10 +177,10 @@
                 
                 <h3 class="text-xl font-semibold text-red-600 mb-3">Desafíos Principales</h3>
                 <ul class="list-disc list-inside text-base sm:text-lg leading-relaxed space-y-3 marker:text-red-600">
-                    <li class="pl-4"><strong class="font-bold">Condiciones de Carrera:</strong> Ocurren cuando dos o más hilos acceden y modifican datos compartidos sin un control de acceso adecuado, haciendo que el resultado sea indeterminado. La solución es garantizar la **Exclusión Mutua** en las **Secciones Críticas** del código.</li>
-                    <li class="pl-4"><strong class="font-bold">Interbloqueos (Deadlocks):</strong> Es la falla más grave. Ocurre cuando se cumplen las **cuatro condiciones de Coffman** simultáneamente: Exclusión Mutua, Retención y Espera, No Preemption (No se puede forzar la liberación) y Espera Circular.
+                    <li class="pl-4"><strong class="font-bold">Condiciones de Carrera:</strong> Ocurren cuando dos o más hilos acceden y modifican datos compartidos sin un control de acceso adecuado, haciendo que el resultado sea indeterminado. La solución es garantizar la <strong class="font-bold">Exclusión Mutua</strong> en las <strong class="font-bold">Secciones Críticas</strong> del código.</li>
+                    <li class="pl-4"><strong class="font-bold">Interbloqueos (Deadlocks):</strong> Es la falla más grave. Ocurre cuando se cumplen las <strong>cuatro condiciones de Coffman</strong> simultáneamente: Exclusión Mutua, Retención y Espera, No Preemption (No se puede forzar la liberación) y Espera Circular.
                         <div class="mt-2 p-3 bg-red-100 rounded-lg border border-red-300">
-                            <strong class="text-red-700">📌 La Cena de los Filósofos (Ejemplo Clásico de Espera Circular):</strong> Este problema ilustra el interbloqueo con 5 filósofos (hilos) y 5 tenedores (recursos). Si cada filósofo toma un tenedor de un lado y luego espera por el otro (una secuencia de toma ineficiente), se establece una **cadena de espera circular** donde nadie puede obtener los dos recursos que necesita, y por lo tanto, nadie come ni libera recursos. La solución a menudo implica un **orden jerárquico** en la toma de recursos (p. ej., el último filósofo debe tomar el tenedor en orden inverso).
+                            <strong class="text-red-700">📌 La Cena de los Filósofos (Ejemplo Clásico de Espera Circular):</strong> Este problema ilustra el interbloqueo con 5 filósofos (hilos) y 5 tenedores (recursos). Si cada filósofo toma un tenedor de un lado y luego espera por el otro (una secuencia de toma ineficiente), se establece una <strong>cadena de espera circular</strong> donde nadie puede obtener los dos recursos que necesita, y por lo tanto, nadie come ni libera recursos. La solución a menudo implica un <strong>orden jerárquico</strong> en la toma de recursos (p. ej., el último filósofo debe tomar el tenedor en orden inverso).
                         </div>
                     </li>
                     <li class="pl-4"><strong class="font-bold">Inanición (Starvation):</strong> Un hilo nunca obtiene los recursos que necesita o nunca se le asigna tiempo de CPU debido a una planificación injusta, aunque los recursos estén disponibles.</li>
@@ -234,5 +234,3 @@
 
 </body>
 </html>
-
-
